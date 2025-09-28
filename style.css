@@ -1,0 +1,272 @@
+
+
+:root {
+  --background-color: #121212;
+  --board-bg-color: #1e1e1e;
+  --cell-bg-color: #2a2a2a;
+  --selected-cell-bg: #4a4a4a;
+  --text-color: #e0e0e0;
+  --primary-color: #bb86fc;
+  --primary-variant-color: #3700b3;
+  --secondary-color: #03dac6;
+  --error-color: #cf6679;
+  --given-text-color: #e0e0e0;
+  --user-text-color: var(--secondary-color);
+  --border-color: #3a3a3a;
+  --region-border-color: #7d7d7d;
+  --font-family: 'Poppins', sans-serif;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-variant-color);
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: var(--board-bg-color);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  width: min(90vw, 540px);
+  height: min(90vw, 540px);
+  border: 3px solid var(--region-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--board-bg-color);
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--cell-bg-color);
+  border: 1px solid var(--border-color);
+  font-size: clamp(1rem, 4vw, 2rem);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  aspect-ratio: 1 / 1;
+  user-select: none;
+}
+
+.cell:nth-child(3n) { border-right-color: var(--region-border-color); }
+.cell:nth-child(9n) { border-right: none; }
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) { border-bottom-color: var(--region-border-color); }
+.cell:nth-child(n+73) { border-bottom: none; }
+
+
+.cell.selected {
+  background-color: var(--selected-cell-bg);
+}
+
+.cell.related {
+  background-color: #383838;
+}
+
+.cell.highlighted {
+  background-color: var(--primary-variant-color);
+  color: var(--text-color);
+}
+
+.cell.given {
+  color: var(--given-text-color);
+  font-weight: 600;
+}
+
+.cell.user-filled {
+  color: var(--user-text-color);
+}
+
+.cell.incorrect {
+  background-color: rgba(207, 102, 121, 0.3);
+  color: var(--error-color);
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.controls, .difficulty-controls, .game-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn, .difficulty-select {
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  background-color: var(--primary-variant-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.btn:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.difficulty-select {
+  background-color: var(--cell-bg-color);
+  border: 1px solid var(--border-color);
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 3rem;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23bb86fc%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right .7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
+}
+
+.game-info {
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: var(--cell-bg-color);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.number-palette {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.palette-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--cell-bg-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.palette-btn:hover {
+    background-color: var(--selected-cell-bg);
+}
+
+.game-over-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-over-content {
+  background-color: var(--board-bg-color);
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 30px var(--primary-color);
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.game-over-content h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.game-over-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+  .game-container {
+    padding: 1rem;
+  }
+  .controls, .difficulty-controls {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .btn, .difficulty-select {
+    width: 100%;
+  }
+  .number-palette {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    width: 100%;
+  }
+  .palette-btn {
+    width: auto;
+  }
+}
+
