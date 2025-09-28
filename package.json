@@ -1,0 +1,25 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "sudoku game",
+  "homepage": "https://github.com/RoutineCheck/Sudoku#readme",
+  "bugs": {
+    "url": "https://github.com/RoutineCheck/Sudoku/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoutineCheck/Sudoku.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "http-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  }
+}
